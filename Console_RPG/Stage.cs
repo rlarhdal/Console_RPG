@@ -66,8 +66,10 @@ namespace Console_RPG
             Console.WriteLine();
             Console.WriteLine("Lv. " + player.level);
             Console.WriteLine(player.name + " (전사)");
-            Console.WriteLine("공격력 : " + player.power);
-            Console.WriteLine("방어력 : " + player.defense);
+            if(player.additionalPower == 0) Console.WriteLine($"공격력 : {player.power}");
+            else Console.WriteLine($"공격력 : {player.power} (+{player.additionalPower})");
+            if (player.additionalDefense == 0) Console.WriteLine($"방어력 : {player.defense}");
+            else Console.WriteLine($"방어력 : {player.defense} (+{player.additionalDefense})");
             Console.WriteLine("체력 : " + player.health);
             Console.WriteLine(player.gold + " G");
             Console.WriteLine();
@@ -150,16 +152,15 @@ namespace Console_RPG
 
             Console.WriteLine("[아이템 목록]");
 
-            //아이템 목록 불러오기
-            foreach(var item in inventory.equipItems)
+            for(int i = 0; i < inventory.equipItems.Count; i++)
             {
-                if (item.isEquip == true)
+                if (inventory.equipItems[i].isEquip == true)
                 {
-                    Console.WriteLine($" [{item.id}] [E]{item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}");
+                    Console.WriteLine($" [{i+1}] [E]{inventory.equipItems[i].itemName}    |    {inventory.equipItems[i].statInfo}  +{inventory.equipItems[i].itemStat}    |    {inventory.equipItems[i].itemInfo}");
                 }
                 else
                 {
-                    Console.WriteLine($" [{item.id}] {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}");
+                    Console.WriteLine($" [{i+1}] {inventory.equipItems[i].itemName}    |    {inventory.equipItems[i].statInfo}  +{inventory.equipItems[i].itemStat}    |    {inventory.equipItems[i].itemInfo}");
                 }
             }
 
@@ -171,8 +172,46 @@ namespace Console_RPG
             {
                 Console.WriteLine("원하는 물건의 번호나 행동을 입력해주세요.");
                 Console.Write(">> ");
-
+                 
                 string input = Console.ReadLine();
+
+                for(int i = 0;i < inventory.equipItems.Count; i++)
+                {
+                    if (int.Parse(input) != 0 && (inventory.equipItems[int.Parse(input) -1].itemName == inventory.equipItems[i].itemName))
+                    {
+                        if (inventory.equipItems[i].isEquip == true)
+                        {
+                            inventory.equipItems[i].isEquip = false;
+                            //장비 착용에 따른 스탯 반영
+                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense -= inventory.equipItems[i].itemStat;
+                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower -= inventory.equipItems[i].itemStat;
+                            Console.Clear();
+                            Console.WriteLine("장비를 해제했습니다.");
+                            MountingItem();
+                            break;
+                        }
+                        else
+                        {
+                            inventory.equipItems[i].isEquip = true;
+                            //장비 착용에 따른 스탯 반영
+                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense += inventory.equipItems[i].itemStat;
+                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower += inventory.equipItems[i].itemStat;
+                            Console.Clear();
+                            Console.WriteLine("장비를 착용했습니다.");
+                            MountingItem();
+                            break;
+                        }
+                    }
+                    else if (int.Parse(input) == 0)
+                    {
+                        Console.Clear();
+                        Intro();
+                    }
+                    else
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                    }
+                }
 
                 foreach (var item in inventory.equipItems)
                 {
@@ -182,6 +221,8 @@ namespace Console_RPG
                         {
                             item.isEquip = false;
                             //장비 착용에 따른 스탯 반영
+                            if (item.statInfo == "방어력") player.additionalDefense -= item.itemStat;
+                            else if (item.statInfo == "공격력") player.additionalPower -= item.itemStat;
                             Console.Clear();
                             Console.WriteLine("장비를 해제했습니다.");
                             MountingItem();
@@ -191,6 +232,8 @@ namespace Console_RPG
                         {
                             item.isEquip = true;
                             //장비 착용에 따른 스탯 반영
+                            if (item.statInfo == "방어력") player.additionalDefense += item.itemStat;
+                            else if(item.statInfo == "공격력") player.additionalPower += item.itemStat;
                             Console.Clear();
                             Console.WriteLine("장비를 착용했습니다.");
                             MountingItem();
@@ -229,7 +272,7 @@ namespace Console_RPG
                 }
                 else
                 {
-                    Console.WriteLine($" ⊙ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price}");
+                    Console.WriteLine($" ⊙ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price} G");
                 }
             }
 
@@ -280,7 +323,7 @@ namespace Console_RPG
                 }
                 else
                 {
-                    Console.WriteLine($" [{item.id}] {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price}");
+                    Console.WriteLine($" [{item.id}] {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price} G");
                 }
             }
 
