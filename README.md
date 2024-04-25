@@ -10,7 +10,7 @@
 
 ## 개요
 - 프로젝트 이름 : Console_RPG
-- 프로젝트 기간 : 2024.04.23 ~ 2024.04.25
+- 프로젝트 기간 : 2024.04.24 ~ 2024.04.25 18:00
 - 개발 엔진 및 언어 : <img src="https://img.shields.io/badge/Unity-black?style=UNITy&logo=UNITY&logoColor=white"/> <img src="https://img.shields.io/badge/-C%23-000000?logo=Csharp&style=flat"/>
 - 개인 프로젝트
 
