@@ -13,8 +13,8 @@ namespace Console_RPG
     {
         public struct StageInfo
         {
-            public int dDefense;
-            public int dAttack;
+            public double dDefense;
+            public double dAttack;
             public int dGold;
         }
 
@@ -28,12 +28,14 @@ namespace Console_RPG
         private Player player;
         private int type;
         private Stage stage;
+        private int stageCnt;
 
         public Dungeon(int type, Player player, Stage stage)
         {
             this.type = type;
             this.player = player;
             this.stage = stage;
+            this.stageCnt = 0;
         }
 
         public void DungeonEnter()
@@ -93,7 +95,8 @@ namespace Console_RPG
 
         public void DugeonFail()
         {
-            Console.WriteLine("던전 실패");
+            Console.WriteLine("[던전 실패]");
+            Console.WriteLine();
             Console.WriteLine("아쉽습니다...");
             Console.WriteLine("던전 클리어를 하지 못했습니다.");
             Console.WriteLine();
@@ -133,13 +136,26 @@ namespace Console_RPG
 
         public void DungeonClear(StageInfo dstage)
         {
+            //레벨업 시스템
+            stageCnt++;
+            if (stageCnt == player.level)
+            {
+                player.level++;
+                player.power += 0.5;
+                player.defense += 1;
+                stageCnt = 0;
+
+                Console.WriteLine($"레벨이 올랐습니다. (레벨 : {player.level})");
+            }
+
             dstage.dAttack += (dstage.dDefense - (player.defense + player.additionalDefense));
 
             Random rnd = new Random();
-            int additionalGold = rnd.Next((player.power+player.additionalPower), (player.power + player.additionalPower)*2);
+            int additionalGold = rnd.Next((int)(player.power+player.additionalPower), (int)(player.power + player.additionalPower)*2);
             dstage.dGold += dstage.dGold * (additionalGold / 100);
 
-            Console.WriteLine("던전 클리어");
+            Console.WriteLine("[던전 클리어]");
+            Console.WriteLine();
             Console.WriteLine("축하합니다!");
             Console.WriteLine("던전을 클리어 했습니다.");
             Console.WriteLine();

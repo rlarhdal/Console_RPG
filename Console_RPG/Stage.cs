@@ -32,6 +32,7 @@ namespace Console_RPG
             Console.WriteLine("[2] 인벤토리");
             Console.WriteLine("[3] 상점");
             Console.WriteLine("[4] 던전");
+            Console.WriteLine("[5] 샘물");
             Console.WriteLine();
 
             while (true)
@@ -57,6 +58,10 @@ namespace Console_RPG
                     case "4":
                         Console.Clear();
                         DungeonGate();
+                        break;
+                    case "5":
+                        Console.Clear();
+                        Rest();
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
@@ -163,7 +168,7 @@ namespace Console_RPG
             {
                 if (inventory.equipItems[i].isEquip == true)
                 {
-                    Console.WriteLine($" [{i+1}] [E]{inventory.equipItems[i].itemName}    |    {inventory.equipItems[i].statInfo}  +{inventory.equipItems[i].itemStat}    |    {inventory.equipItems[i].itemInfo}");
+                    Console.WriteLine($" [{i+1}] {inventory.equipItems[i].equiped} {inventory.equipItems[i].itemName}    |    {inventory.equipItems[i].statInfo}  +{inventory.equipItems[i].itemStat}    |    {inventory.equipItems[i].itemInfo}");
                 }
                 else
                 {
@@ -181,35 +186,30 @@ namespace Console_RPG
                 Console.Write(">> ");
                  
                 string input = Console.ReadLine();
+                int choice = int.Parse(input);
 
+                //아이템 장착 및 해제
                 for(int i = 0;i < inventory.equipItems.Count; i++)
                 {
-                    if (int.Parse(input) != 0 && (inventory.equipItems[int.Parse(input) -1].itemName == inventory.equipItems[i].itemName))
+                    if (choice != 0 && (inventory.equipItems[choice - 1].itemName == inventory.equipItems[i].itemName))
                     {
+                        //이미 장착한 아이템
                         if (inventory.equipItems[i].isEquip == true)
                         {
-                            inventory.equipItems[i].isEquip = false;
-                            //장비 착용에 따른 스탯 반영
-                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense -= inventory.equipItems[i].itemStat;
-                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower -= inventory.equipItems[i].itemStat;
-                            Console.Clear();
-                            Console.WriteLine("장비를 해제했습니다.");
+                            //아이템 해제
+                            inventory.Unequip(i, player);
                             MountingItem();
                             break;
                         }
                         else
                         {
-                            inventory.equipItems[i].isEquip = true;
-                            //장비 착용에 따른 스탯 반영
-                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense += inventory.equipItems[i].itemStat;
-                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower += inventory.equipItems[i].itemStat;
-                            Console.Clear();
-                            Console.WriteLine("장비를 착용했습니다.");
+                            //아이템 장착하기
+                            inventory.Equip(i, choice, player);
                             MountingItem();
                             break;
                         }
                     }
-                    else if (int.Parse(input) == 0)
+                    else if (choice == 0)
                     {
                         Console.Clear();
                         Intro();
@@ -247,6 +247,7 @@ namespace Console_RPG
 
             Console.WriteLine();
             Console.WriteLine("[1] 아이템 구매");
+            Console.WriteLine("[2] 아이템 판매");
             Console.WriteLine("[0] 나가기");
             Console.WriteLine();
 
@@ -265,6 +266,10 @@ namespace Console_RPG
                     case "1":
                         Console.Clear();
                         Buy();
+                        break;
+                    case "2":
+                        Console.Clear();
+                        Sell();
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
@@ -343,6 +348,85 @@ namespace Console_RPG
             }
         }
 
+        private void Sell()
+        {
+            Console.WriteLine("--------------------------------------------------------");
+            Console.WriteLine("상점 - 아이템 판매");
+            Console.WriteLine("필요한 아이템을 판매할 수 있습니다.");
+            Console.WriteLine();
+
+            Console.WriteLine("[보유 골드]");
+            Console.WriteLine($"{player.gold} G") ;
+            Console.WriteLine();
+            Console.WriteLine("아이템 목록");
+
+            //inventory list에 있는 아이템 불러오기
+            foreach(var item in inventory.equipItems)
+            {
+                if (item.isEquip == true)
+                {
+                    Console.WriteLine($"  -  [E]{item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {(item.price)*0.85} G");
+                }
+                else
+                {
+                    Console.WriteLine($"  -  {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}");
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("[0] 나가기");
+            Console.WriteLine();
+
+            while (true)
+            {
+                Console.WriteLine("원하는 물건의 번호나 행동을 입력해주세요.");
+                Console.Write(">> ");
+
+                string input = Console.ReadLine();
+                int choice = int.Parse(input);
+
+                //아이템 장착 및 해제
+                for (int i = 0; i < inventory.equipItems.Count; i++)
+                {
+                    if (choice != 0 && (inventory.equipItems[choice - 1].itemName == inventory.equipItems[i].itemName))
+                    {
+                        if (inventory.equipItems[i].isEquip == true)
+                        {
+                            //장비 해제
+                            inventory.equipItems[i].isEquip = false;
+                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense -= inventory.equipItems[i].itemStat;
+                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower -= inventory.equipItems[i].itemStat;
+                            player.gold += (inventory.equipItems[i].price * 0.85);
+                            inventory.equipItems.Remove(inventory.equipItems[i]);
+                            Console.Clear();
+                            Console.WriteLine("착용 중인 아이템을 판매했습니다.");
+                            Sell();
+                            break;
+                        }
+                        else
+                        {
+                            player.gold += (inventory.equipItems[i].price * 0.85);
+                            inventory.equipItems.Remove(inventory.equipItems[i]);
+                            Console.Clear();
+                            Console.WriteLine("착용 중인 아이템을 판매했습니다.");
+                            Sell();
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("잘못된 입력입니다.");
+                    }
+                }
+
+                if (choice == 0)
+                {
+                    Console.Clear();
+                    Store();
+                }
+            }
+        }
+
         public void DungeonGate()
         {
             Console.WriteLine("--------------------------------------------------------");
@@ -386,6 +470,49 @@ namespace Console_RPG
                 }
             }
 
+        }
+
+        public void Rest()
+        {
+            Console.WriteLine("--------------------------------------------------------");
+            Console.WriteLine("샘물");
+            Console.WriteLine($"동전을 던지고 샘물을 마시면 체력을 회복할 수 있습니다.    (보유 골드 : {player.gold} G)");
+            Console.WriteLine();
+            Console.WriteLine("[1] 휴식하기");
+            Console.WriteLine("[0] 나가기");
+            Console.WriteLine();
+
+            while (true)
+            {
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "0":
+                        Console.Clear();
+                        Intro();
+                        break;
+                    case "1":
+                        if(player.gold < 500 && player.gold - 500 < 0)
+                        {
+                            Console.WriteLine("골드가 부족합니다.");
+                        }
+                        else
+                        {
+                            player.gold -= 500;
+                            player.health = 100;
+                            Console.Clear() ;
+                            Console.WriteLine($"체력이 회복됐습니다.    (현재 체력 : {player.health})");
+                            Rest();
+                        }   
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
+            }
         }
     }
 }

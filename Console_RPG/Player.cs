@@ -9,13 +9,13 @@ namespace Console_RPG
     public class Player
     {
         public string name { get; set; }
-        public int level { get; }
-        public int power { get; }
-        public int defense { get; }
-        public int health { get; set; }
-        public int gold { get; set; }
-        public int additionalPower { get; set; }
-        public int additionalDefense { get; set; }
+        public int level { get; set; }
+        public double power { get; set; }
+        public double defense { get; set; }
+        public double health { get; set; }
+        public double gold { get; set; }
+        public double additionalPower { get; set; }
+        public double additionalDefense { get; set; }
 
         public Player()
         {
