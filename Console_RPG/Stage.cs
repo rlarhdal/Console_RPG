@@ -29,6 +29,7 @@ namespace Console_RPG
             Console.WriteLine("[1] 상태 보기");
             Console.WriteLine("[2] 인벤토리");
             Console.WriteLine("[3] 상점");
+            Console.WriteLine("[4] 던전");
             Console.WriteLine();
 
             while (true)
@@ -50,6 +51,10 @@ namespace Console_RPG
                     case "3":
                         Console.Clear();
                         Store();
+                        break;
+                    case "4":
+                        Console.Clear();
+                        DungeonGate();
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
@@ -212,44 +217,6 @@ namespace Console_RPG
                         Console.WriteLine("잘못된 입력입니다.");
                     }
                 }
-
-                foreach (var item in inventory.equipItems)
-                {
-                    if (int.Parse(input) != 0 && (int.Parse(input) == item.id))
-                    {
-                        if(item.isEquip == true)
-                        {
-                            item.isEquip = false;
-                            //장비 착용에 따른 스탯 반영
-                            if (item.statInfo == "방어력") player.additionalDefense -= item.itemStat;
-                            else if (item.statInfo == "공격력") player.additionalPower -= item.itemStat;
-                            Console.Clear();
-                            Console.WriteLine("장비를 해제했습니다.");
-                            MountingItem();
-                            break;
-                        }
-                        else
-                        {
-                            item.isEquip = true;
-                            //장비 착용에 따른 스탯 반영
-                            if (item.statInfo == "방어력") player.additionalDefense += item.itemStat;
-                            else if(item.statInfo == "공격력") player.additionalPower += item.itemStat;
-                            Console.Clear();
-                            Console.WriteLine("장비를 착용했습니다.");
-                            MountingItem();
-                            break;
-                        }
-                    }
-                    else if (int.Parse(input) == 0)
-                    {
-                        Console.Clear();
-                        Intro();
-                    }
-                    else
-                    {
-                        Console.WriteLine("잘못된 입력입니다.") ;
-                    }
-                }
             }
         }
 
@@ -372,6 +339,47 @@ namespace Console_RPG
                     }
                 }
             }
+        }
+
+        private void DungeonGate()
+        {
+            Console.WriteLine("--------------------------------------------------------");
+            Console.WriteLine("던전 입장");
+            Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
+            Console.WriteLine();
+            Console.WriteLine("[1] 쉬운 던전      | 방어력  5이상 권장");
+            Console.WriteLine("[2] 일반 던전      | 방어력 11이상 권장");
+            Console.WriteLine("[3] 어려운 던전    | 방어력 17이상 권장");
+            Console.WriteLine("[0] 나가기");
+            Console.WriteLine();
+
+            while (true)
+            {
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">> ");
+
+                string input = Console.ReadLine();
+                int type = int.Parse(input);
+                Dungeon dungeon = new Dungeon(type, player);
+
+                switch (input)
+                {
+                    case "0":
+                        Console.Clear();
+                        Intro();
+                        break;
+                    case "1":
+                    case "2":
+                    case "3":
+                        Console.Clear();
+                        dungeon.DungeonEnter();
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        break;
+                }
+            }
+
         }
     }
 }
