@@ -329,21 +329,23 @@ namespace Console_RPG
                         else
                         {
                             Console.WriteLine("골드가 부족합니다.");
+                            break;
                         }
                     }
-                    else if(int.Parse(input) == 0)
+                    else if (store.storeItem[int.Parse(input)].isBuy == true)
                     {
-                        Console.Clear();
-                        Intro();
+                        Console.WriteLine("이미 구매한 아이템입니다.");
                     }
-                    else if(item.isBuy == true)
-                    {
-                        Console.WriteLine("이미 구매한 장비입니다.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
-                    }
+                }
+
+                if (int.Parse(input) == 0)
+                {
+                    Console.Clear();
+                    Store();
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
                 }
             }
         }
