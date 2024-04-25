@@ -79,6 +79,8 @@ public class Inventory //장비
         //}
 
         Console.Clear();
-        Console.WriteLine("장비를 착용했습니다.");
+        Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        Console.WriteLine("        장비를 착용했습니다.        ");
+        Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }

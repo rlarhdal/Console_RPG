@@ -11,8 +11,9 @@ namespace Console_RPG
     {
         private Player player;
         private Inventory inventory;
-        private Store store;
         private Stage stage;
+        private Store store;
+
 
         public Stage(Player player, Inventory inventory, Store store)
         {
@@ -24,8 +25,9 @@ namespace Console_RPG
 
         public void Intro()
         {
+            Console.Clear();
             Console.WriteLine("--------------------------------------------------------");
-            Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
+            Console.WriteLine($"스파르타 마을에 오신 {player.name}님 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("[1] 상태 보기");
@@ -34,6 +36,8 @@ namespace Console_RPG
             Console.WriteLine("[4] 던전");
             Console.WriteLine("[5] 샘물");
             Console.WriteLine();
+            Console.WriteLine("[0] 게임 종료");
+            Console.WriteLine();
 
             while (true)
             {
@@ -41,31 +45,55 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                switch (input)
+                
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    case "1":
-                        Console.Clear();
-                        State();
-                        break;
-                    case "2":
-                        Console.Clear();
-                        InventoryState();
-                        break;
-                    case "3":
-                        Console.Clear();
-                        Store();
-                        break;
-                    case "4":
-                        Console.Clear();
-                        DungeonGate();
-                        break;
-                    case "5":
-                        Console.Clear();
-                        Rest();
-                        break;
-                    default:
-                        Console.WriteLine("잘못된 입력입니다.");
-                        break;
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
+                    {
+                        case 0:
+                            Console.Clear();
+                            Environment.Exit(0);
+                            break;
+                        case 1:
+                            Console.Clear();
+                            State();
+                            break;
+                        case 2:
+                            Console.Clear();
+                            InventoryState();
+                            break;
+                        case 3:
+                            Console.Clear();
+                            Store();
+                            break;
+                        case 4:
+                            Console.Clear();
+                            DungeonGate();
+                            break;
+                        case 5:
+                            Console.Clear();
+                            Rest();
+                            break;
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            break;
+                    }
+                }
+                else
+                {
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
@@ -93,14 +121,35 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                if (input == "0")
+                
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    Console.Clear();
-                    Intro();
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
+                    {
+                        case 0:
+                            Console.Clear();
+                            Intro();
+                            break;
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            break;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
@@ -237,11 +286,11 @@ namespace Console_RPG
             {
                 if (item.isBuy == true)
                 {
-                    Console.WriteLine($" ⊙ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    구매완료");
+                    Console.WriteLine($" ▶ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    구매완료");
                 }
                 else
                 {
-                    Console.WriteLine($" ⊙ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price} G");
+                    Console.WriteLine($" ▶ {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {item.price} G");
                 }
             }
 
@@ -257,28 +306,48 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                switch (input)
+                
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    case "0":
-                        Console.Clear();
-                        Intro();
-                        break;
-                    case "1":
-                        Console.Clear();
-                        Buy();
-                        break;
-                    case "2":
-                        Console.Clear();
-                        Sell();
-                        break;
-                    default:
-                        Console.WriteLine("잘못된 입력입니다.");
-                        break;
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
+                    {
+                        case 0:
+                            Console.Clear();
+                            Intro();
+                            break;
+                        case 1:
+                            Console.Clear();
+                            Buy();
+                            break;
+                        case 2:
+                            Console.Clear();
+                            Sell();
+                            break;
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            break;
+                    }
+                }
+                else
+                {
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
 
-        private void Buy()
+        public void Buy()
         {
             Console.WriteLine("--------------------------------------------------------");
             Console.WriteLine("상점 - 아이템 구매");
@@ -312,40 +381,46 @@ namespace Console_RPG
 
                 string input = Console.ReadLine();
 
-                foreach(var item in store.storeItem)
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    if(int.Parse(input) != 0 && (int.Parse(input) == item.id && item.isBuy == false))
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
                     {
-                        if(player.gold >= item.price)
-                        {
-                            player.gold -= item.price;
-                            item.isBuy = true;
-                            inventory.Items(item);
+                        case 0:
                             Console.Clear();
-                            Console.WriteLine($"{item.itemName}를 구입했습니다.");
+                            Store();
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                            Console.Clear();
+                            store.Buy(player, choice, inventory);
                             Buy();
                             break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("골드가 부족합니다.");
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                             break;
-                        }
                     }
-                    else if (store.storeItem[int.Parse(input)].isBuy == true)
-                    {
-                        Console.WriteLine("이미 구매한 아이템입니다.");
-                    }
-                }
-
-                if (int.Parse(input) == 0)
-                {
-                    Console.Clear();
-                    Store();
                 }
                 else
                 {
-                    Console.WriteLine("잘못된 입력입니다.");
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
@@ -367,11 +442,11 @@ namespace Console_RPG
             {
                 if (item.isEquip == true)
                 {
-                    Console.WriteLine($"  -  [E]{item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {(item.price)*0.85} G");
+                    Console.WriteLine($" [{item.id}] [E]{item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}    |    {(item.price)*0.85} G");
                 }
                 else
                 {
-                    Console.WriteLine($"  -  {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}");
+                    Console.WriteLine($" [{item.id}] {item.itemName}    |    {item.statInfo}  +{item.itemStat}    |    {item.itemInfo}");
                 }
             }
 
@@ -385,46 +460,43 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                int choice = int.Parse(input);
 
-                //아이템 장착 및 해제
-                for (int i = 0; i < inventory.equipItems.Count; i++)
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    if (choice != 0 && (inventory.equipItems[choice - 1].itemName == inventory.equipItems[i].itemName))
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
                     {
-                        if (inventory.equipItems[i].isEquip == true)
-                        {
-                            //장비 해제
-                            inventory.equipItems[i].isEquip = false;
-                            if (inventory.equipItems[i].statInfo == "방어력") player.additionalDefense -= inventory.equipItems[i].itemStat;
-                            else if (inventory.equipItems[i].statInfo == "공격력") player.additionalPower -= inventory.equipItems[i].itemStat;
-                            player.gold += (inventory.equipItems[i].price * 0.85);
-                            inventory.equipItems.Remove(inventory.equipItems[i]);
+                        case 0:
                             Console.Clear();
-                            Console.WriteLine("착용 중인 아이템을 판매했습니다.");
-                            Sell();
+                            Store();
                             break;
-                        }
-                        else
-                        {
-                            player.gold += (inventory.equipItems[i].price * 0.85);
-                            inventory.equipItems.Remove(inventory.equipItems[i]);
-                            Console.Clear();
-                            Console.WriteLine("착용 중인 아이템을 판매했습니다.");
-                            Sell();
+                        default:
+                            if(choice - 1 <= inventory.equipItems.Count)
+                            {
+                                store.Sell(player, choice, inventory);
+                                Sell();
+                            }
+                            else
+                            {
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            }
                             break;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("잘못된 입력입니다.");
                     }
                 }
-
-                if (choice == 0)
+                else
                 {
-                    Console.Clear();
-                    Store();
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
@@ -447,31 +519,52 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                int type = int.Parse(input);
-                Dungeon dungeon = new Dungeon(type, player, stage);
 
-                switch (input)
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                Dungeon dungeon = new Dungeon(choice, player, stage);
+
+                if (isNumber)
                 {
-                    case "0":
-                        Console.Clear();
-                        Intro();
-                        break;
-                    case "1":
-                    case "2":
-                    case "3":
-                        Console.Clear();
-                        if(player.health < 0)
-                        {
-                            Console.WriteLine("체력을 회복해주세요.");
-                        }
-                        dungeon.DungeonEnter();
-                        break;
-                    default:
-                        Console.WriteLine("잘못된 입력입니다.");
-                        break;
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
+                    {
+                        case 0:
+                            Console.Clear();
+                            Intro();
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                            Console.Clear();
+                            if (player.health <= 0)
+                            {
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Console.WriteLine("        체력을 회복해주세요.        ");
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Rest();
+                            }
+                            dungeon.DungeonEnter();
+                            break;
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            break;
+                    }
+                }
+                else
+                {
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
-
         }
 
         public void Rest()
@@ -490,29 +583,53 @@ namespace Console_RPG
                 Console.Write(">> ");
 
                 string input = Console.ReadLine();
-                switch (input)
+
+                //숫자인지 문자인지 구분하는 코드
+                bool isNumber = false;
+                int choice = 0;
+                isNumber = int.TryParse(input, out choice);
+
+                if (isNumber)
                 {
-                    case "0":
-                        Console.Clear();
-                        Intro();
-                        break;
-                    case "1":
-                        if(player.gold < 500 && player.gold - 500 < 0)
-                        {
-                            Console.WriteLine("골드가 부족합니다.");
-                        }
-                        else
-                        {
-                            player.gold -= 500;
-                            player.health = 100;
-                            Console.Clear() ;
-                            Console.WriteLine($"체력이 회복됐습니다.    (현재 체력 : {player.health})");
-                            Rest();
-                        }   
-                        break;
-                    default:
-                        Console.WriteLine("잘못된 입력입니다.");
-                        break;
+                    //숫자 입력
+                    //판매함수 실행
+                    switch (choice)
+                    {
+                        case 0:
+                            Console.Clear();
+                            Intro();
+                            break;
+                        case 1:
+                            if (player.gold < 500 && player.gold - 500 < 0)
+                            {
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Console.WriteLine("          골드가 부족합니다.        ");
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            }
+                            else
+                            {
+                                player.gold -= 500;
+                                player.health = 100;
+                                Console.Clear();
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Console.WriteLine($"       체력이 회복됐습니다.    (현재 체력 : {player.health})       ");
+                                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                                Rest();
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            Console.WriteLine("       숫자를 다시 골라주세요.      ");
+                            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                            break;
+                    }
+                }
+                else
+                {
+                    // 문자 입력
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Console.WriteLine("     숫자로 바르게 입력해주세요.    ");
+                    Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
