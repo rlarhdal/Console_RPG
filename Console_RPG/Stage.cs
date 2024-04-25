@@ -12,12 +12,14 @@ namespace Console_RPG
         private Player player;
         private Inventory inventory;
         private Store store;
+        private Stage stage;
 
         public Stage(Player player, Inventory inventory, Store store)
         {
             this.player = player;
             this.inventory = inventory;
             this.store = store;
+            stage = this;
         }
 
         public void Intro()
@@ -341,7 +343,7 @@ namespace Console_RPG
             }
         }
 
-        private void DungeonGate()
+        public void DungeonGate()
         {
             Console.WriteLine("--------------------------------------------------------");
             Console.WriteLine("던전 입장");
@@ -360,7 +362,7 @@ namespace Console_RPG
 
                 string input = Console.ReadLine();
                 int type = int.Parse(input);
-                Dungeon dungeon = new Dungeon(type, player);
+                Dungeon dungeon = new Dungeon(type, player, stage);
 
                 switch (input)
                 {
@@ -372,6 +374,10 @@ namespace Console_RPG
                     case "2":
                     case "3":
                         Console.Clear();
+                        if(player.health < 0)
+                        {
+                            Console.WriteLine("체력을 회복해주세요.");
+                        }
                         dungeon.DungeonEnter();
                         break;
                     default:

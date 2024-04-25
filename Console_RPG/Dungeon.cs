@@ -27,11 +27,13 @@ namespace Console_RPG
 
         private Player player;
         private int type;
+        private Stage stage;
 
-        public Dungeon(int type, Player player)
+        public Dungeon(int type, Player player, Stage stage)
         {
             this.type = type;
             this.player = player;
+            this.stage = stage;
         }
 
         public void DungeonEnter()
@@ -72,7 +74,7 @@ namespace Console_RPG
                 float per = rnd.Next(1, 101);
 
                 //40퍼 확률로 던전 실패
-                if (per < 40) 
+                if (per > 20) 
                 {
                     DugeonFail();
                 }
@@ -96,8 +98,17 @@ namespace Console_RPG
             Console.WriteLine("던전 클리어를 하지 못했습니다.");
             Console.WriteLine();
             Console.WriteLine("[탐험 결과]");
-            Console.WriteLine($"체력 {player.health} -> {player.health / 2}");
-            Console.WriteLine($"Gold {player.gold} -> {player.gold}");
+            if(player.health / 2 < 0)
+            {
+                Console.WriteLine($"체력 {player.health} -> {player.health /= 2}");
+                Console.WriteLine($"Gold {player.gold} -> {player.gold}");
+                Console.WriteLine("플레이어가 기절했습니다.");
+            }
+            else
+            {
+                Console.WriteLine($"체력 {player.health} -> {player.health /= 2}");
+                Console.WriteLine($"Gold {player.gold} -> {player.gold}");
+            }
             Console.WriteLine();
             Console.WriteLine("[0] 나가기");
 
@@ -111,7 +122,10 @@ namespace Console_RPG
                 {
                     case "0":
                         Console.Clear();
-
+                        stage.DungeonGate();
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
                         break;
                 }
             }
@@ -130,8 +144,18 @@ namespace Console_RPG
             Console.WriteLine("던전을 클리어 했습니다.");
             Console.WriteLine();
             Console.WriteLine("[탐험 결과]");
-            Console.WriteLine($"체력 {player.health} -> {player.health -= dstage.dAttack}");
-            Console.WriteLine($"Gold {player.gold} -> {player.gold += dstage.dGold}");
+            if ((player.health - dstage.dAttack) <= 0)
+            {
+                int resultHealth = 0;
+                Console.WriteLine($"체력 {player.health} -> {player.health = resultHealth}");
+                Console.WriteLine($"Gold {player.gold} -> {player.gold}");
+                Console.WriteLine("플레이어가 기절했습니다.");
+            }
+            else
+            {
+                Console.WriteLine($"체력 {player.health} -> {player.health -= dstage.dAttack}");
+                Console.WriteLine($"Gold {player.gold} -> {player.gold += dstage.dGold}");
+            }
             Console.WriteLine();
             Console.WriteLine("[0] 나가기");
 
@@ -146,6 +170,10 @@ namespace Console_RPG
                     case "0":
                         Console.Clear();
                         //stage.intro()||stage.DungeonGate()로 돌아가기
+                        stage.DungeonGate();
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
                         break;
                 }
             }
