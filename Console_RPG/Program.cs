@@ -6,12 +6,14 @@ namespace Console_RPG
     {
         static void Main(string[] args)
         {
-
+            Console.Title = "스파르타_RPG";
             Player player = new Player();
             Inventory inventory = new Inventory();
             Store store = new Store();
-
-            Console.Write("플레이어의 이름을 입력해주세요 : ");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("        플레이어의 이름을 입력해주세요 : ");
             string name = Console.ReadLine();
             player.name = name;
 

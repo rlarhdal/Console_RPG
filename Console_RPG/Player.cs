@@ -25,7 +25,7 @@ namespace Console_RPG
             this.power = 10;
             this.defense = 5;
             this.health = 100;
-            this.gold = 150000000;
+            this.gold = 1500;
             this.additionalPower = 0;
             this.additionalDefense = 0;
         }
